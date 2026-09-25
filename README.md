@@ -8,11 +8,15 @@ Public MCP (Model Context Protocol) server for [macd.ie](https://macd.ie), the w
 - **Server card (SEP-1649):** https://macd.ie/.well-known/mcp/server-card.json
 - **Discovery manifest (SEP-1960):** https://macd.ie/.well-known/mcp.json
 - **llms.txt:** https://macd.ie/llms.txt
-- Stateless per MCP spec 2026-07-28: no session id needed; every request is independent.
+- The public endpoint currently accepts independent JSON-RPC requests without a session id. Test protocol/version negotiation with your MCP client rather than relying on an unverified spec-version claim.
 
 ## Tools
 
-`get_services`, `get_pricing`, `get_catalog`, `get_availability`, `get_portfolio`, `get_faq` (pass `query`), `get_process`, `estimate_quote`, `compare_options`, `audit_agent_readiness`, `request_quote`, `book_discovery_call`, `subscribe_updates`, `notify_when_ready`.
+`get_services`, `get_pricing`, `get_availability`, `get_faq` (pass `query`), `get_portfolio`, `get_process`, `estimate_quote`, `compare_options`, `audit_agent_readiness`.
+
+These are the nine public read-only tools returned by `tools/list` on 25 September 2026. This list is a snapshot: check `tools/list` before integrating. There are no public tools here that submit requests, book calls, subscribe a customer or notify someone.
+
+The listed public HTTP routes are informational. Do not infer that connecting this MCP server lets an assistant book, send messages, place orders or make changes for a customer.
 
 All tools answer in English; pass `lang: "es"` for Spanish.
 
