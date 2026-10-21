@@ -2,6 +2,44 @@
 
 Public MCP (Model Context Protocol) server for [macd.ie](https://macd.ie), the website of MACD Adaptive Limited, a web design studio in Dublin 15, Ireland (CRO 818724). English and Spanish spoken.
 
+## Install as an MCP client (npm package)
+
+The `macd-mcp` npm package is a tiny stdio proxy: it lets any MCP client that
+speaks stdio (Claude Desktop, Cursor, VS Code, ...) talk to the remote
+endpoint above. No dependencies, no telemetry, no storage; every line from
+stdin is one JSON-RPC message forwarded by HTTPS POST.
+
+Requirements: Node.js >= 18.
+
+### Claude Desktop / Cursor / any stdio MCP client
+
+Add to your MCP configuration (e.g. `claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "macd": {
+      "command": "npx",
+      "args": ["-y", "macd-mcp"]
+    }
+  }
+}
+```
+
+That is the whole setup: `npx -y macd-mcp` downloads the package and starts
+the proxy; the client then sees the nine read-only tools listed below.
+
+### Options
+
+- `MACD_MCP_URL` - override the endpoint (default `https://macd.ie/mcp`).
+
+### Develop
+
+```
+git clone https://github.com/macd-adaptive/macd-mcp.git
+cd macd-mcp && npm test
+```
+
 ## Endpoint
 
 - **MCP endpoint:** `https://macd.ie/mcp` — JSON-RPC over HTTPS POST, streamable HTTP, **no authentication**
