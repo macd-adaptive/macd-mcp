@@ -1,0 +1,15 @@
+{
+  "name": "macd-mcp",
+  "version": "0.1.0",
+  "description": "Stdio proxy for the public MACD Adaptive MCP endpoint (https://macd.ie/mcp)",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "macd-mcp": "bin/macd-mcp.mjs" },
+  "files": ["bin", "lib", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node --test" },
+  "keywords": ["mcp", "model-context-protocol", "macd", "stdio", "proxy"],
+  "repository": { "type": "git", "url": "git+https://github.com/macd-adaptive/macd-mcp.git" },
+  "homepage": "https://macd.ie",
+  "publishConfig": { "access": "public" }
+}
