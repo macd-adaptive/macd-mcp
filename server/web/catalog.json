@@ -1,0 +1,713 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_version": "1.0.0",
+  "canon_version": "1.10-todo-desde",
+  "company": {
+    "legal_name": "MACD Adaptive Limited",
+    "company_number": "818724",
+    "vat_registered": false,
+    "public_email": "info@macd.ie",
+    "data_rights_email": "info@macd.ie",
+    "phone": "+353 87 457 4175",
+    "currency": "EUR"
+  },
+  "services": [
+    {
+      "id": "web-one-page",
+      "price": {
+        "kind": "fixed",
+        "amount": 400
+      },
+      "copy": {
+        "en": "Templated one-page landing",
+        "es": "Landing de una página con plantilla"
+      },
+      "limits": [
+        "final_content_ready",
+        "one_consolidated_revision",
+        "48h_only_if_sow_confirms_after_ready"
+      ]
+    },
+    {
+      "id": "web-4-5-pages",
+      "price": {
+        "kind": "fixed",
+        "amount": 800
+      },
+      "copy": {
+        "en": "Complete online presence",
+        "es": "Presencia digital completa"
+      },
+      "limits": [
+        "exact_amount_in_sow"
+      ]
+    },
+    {
+      "id": "web-custom",
+      "price": {
+        "kind": "from",
+        "amount": 1500
+      },
+      "copy": {
+        "en": "Custom website",
+        "es": "Web a medida"
+      },
+      "limits": [
+        "discovery_required",
+        "exact_scope_and_price_in_sow"
+      ]
+    },
+    {
+      "id": "whatsapp-request",
+      "price": {
+        "kind": "from",
+        "amount": 300
+      },
+      "copy": {
+        "en": "WhatsApp ordering & bookings",
+        "es": "Pedidos y reservas por WhatsApp"
+      },
+      "limits": [
+        "request_not_booking_or_order",
+        "business_confirms",
+        "provider_readback_required_for_any_confirmed_integration"
+      ]
+    },
+    {
+      "id": "care-monthly",
+      "price": {
+        "kind": "recurring",
+        "amount": 50,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Care monthly",
+        "es": "Care mensual"
+      },
+      "limits": [
+        "first_30_days_included",
+        "30_minutes_per_month",
+        "non_cumulative",
+        "no_lock_in",
+        "7_day_first_charge_reminder",
+        "cancel_before_next_renewal"
+      ]
+    },
+    {
+      "id": "care-annual",
+      "price": {
+        "kind": "prepaid",
+        "amount": 500,
+        "period": "12_total_months"
+      },
+      "copy": {
+        "en": "Care annual",
+        "es": "Care anual"
+      },
+      "limits": [
+        "12_month_commitment",
+        "launch_month_plus_one_further_no_charge_month_inside_12",
+        "no_month_13"
+      ]
+    },
+    {
+      "id": "mcp-built-site",
+      "price": {
+        "kind": "from",
+        "amount": 600
+      },
+      "copy": {
+        "en": "Agent-Ready MCP setup on a MACD-built site",
+        "es": "Configuración MCP Agent-Ready en una web creada por MACD"
+      },
+      "limits": [
+        "capability_matrix_required",
+        "read_only_by_default"
+      ]
+    },
+    {
+      "id": "mcp-third-party",
+      "price": {
+        "kind": "from",
+        "amount": 1200
+      },
+      "copy": {
+        "en": "Agent-Ready MCP setup on a third-party site",
+        "es": "Configuración MCP Agent-Ready en una web de terceros"
+      },
+      "limits": [
+        "permissions_and_dependencies_in_sow",
+        "read_only_by_default"
+      ]
+    },
+    {
+      "id": "mcp-maintenance",
+      "price": {
+        "kind": "recurring_from",
+        "amount": 59,
+        "period": "month"
+      },
+      "copy": {
+        "en": "MCP maintenance",
+        "es": "Mantenimiento MCP"
+      },
+      "limits": [
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "base-web-whatsapp",
+      "price": {
+        "kind": "from",
+        "amount": 1500
+      },
+      "copy": {
+        "en": "Base pack: website + WhatsApp ordering + single-change included; care 50 EUR/month",
+        "es": "Pack base: web + pedidos por WhatsApp + cambio único incluido; care 50 EUR/mes"
+      },
+      "limits": [
+        "monthly_care_separate",
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "pack-citas",
+      "price": {
+        "kind": "recurring",
+        "amount": 30,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Appointments pack: WhatsApp booking with real slots, reminders, waitlist, live availability",
+        "es": "Pack citas: citas por WhatsApp con huecos reales, recordatorios, lista de espera y huecos en vivo"
+      },
+      "limits": [
+        "requires_base_pack",
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "review-rescue",
+      "price": {
+        "kind": "recurring",
+        "amount": 20,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Review Rescue: Google review alerts with prepared responses",
+        "es": "Review Rescue: alerta de reseñas de Google con respuesta preparada"
+      },
+      "limits": [
+        "response_never_auto_sent",
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "alerta-competencia",
+      "price": {
+        "kind": "recurring",
+        "amount": 15,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Competitor alerts: price, hours and website changes of nearby competitors",
+        "es": "Alerta de competencia: cambios de precio, horario y web de competidores cercanos"
+      },
+      "limits": [
+        "public_sources_only",
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "encuesta-post-servicio",
+      "price": {
+        "kind": "recurring",
+        "amount": 10,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Post-service survey: happy customers invited to Google review, unhappy routed privately to owner",
+        "es": "Encuesta post-servicio: cliente contento invitado a reseña Google, malo en privado al dueño"
+      },
+      "limits": [
+        "requires_consent",
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "informe-semanal",
+      "price": {
+        "kind": "recurring",
+        "amount": 10,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Weekly report: included with any module; standalone 10 EUR/month",
+        "es": "Informe semanal: incluido con cualquier módulo; solo, 10 EUR/mes"
+      },
+      "limits": [
+        "included_with_any_module",
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "pdf-fix-pack",
+      "price": {
+        "kind": "fixed",
+        "amount": 250
+      },
+      "copy": {
+        "en": "PDF Fix Pack: one-off menu/document PDF cleanup",
+        "es": "PDF Fix Pack: arreglo puntual de PDFs de carta/documentos"
+      },
+      "limits": [
+        "one_off",
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "declaracion-accesibilidad",
+      "price": {
+        "kind": "fixed",
+        "amount": 150
+      },
+      "copy": {
+        "en": "Accessibility statement generated from the Evidence API",
+        "es": "Declaración de accesibilidad generada desde la Evidence API"
+      },
+      "limits": [
+        "one_off",
+        "scope_in_sow"
+      ]
+    },
+    {
+      "id": "agenda-extra",
+      "price": {
+        "kind": "recurring",
+        "amount": 5,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Add a chair, add a diary: every stylist gets their own booking calendar.",
+        "es": "Una silla más, una agenda más: cada profesional con su propio calendario de reservas."
+      },
+      "limits": [
+        "requires_pack_citas",
+        "per_diary_price"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "citas-recordatorio-espera",
+      "price": {
+        "kind": "recurring",
+        "amount": 0,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Clients get a WhatsApp reminder the day before, and if someone cancels, the next person on the waiting list gets the slot.",
+        "es": "Recordatorio por WhatsApp el día antes; si alguien cancela, el siguiente de la lista de espera recibe el hueco."
+      },
+      "limits": [
+        "included_in_pack_citas",
+        "no_price_increase"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "senal-no-show",
+      "price": {
+        "kind": "recurring",
+        "amount": 15,
+        "period": "month"
+      },
+      "copy": {
+        "en": "A small deposit when booking means fewer empty chairs from no-shows.",
+        "es": "Una pequeña señal al reservar significa menos sillas vacías por ausencias."
+      },
+      "limits": [
+        "requires_pack_citas",
+        "money_flow_full_e2e_before_sale",
+        "unify_price_with_engine_15"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "pedido-listo",
+      "price": {
+        "kind": "recurring",
+        "amount": 10,
+        "period": "month"
+      },
+      "copy": {
+        "en": "One tap and your customer gets a WhatsApp: Your order is ready. No more calls asking.",
+        "es": "Un toque y tu cliente recibe un WhatsApp: tu pedido está listo. Se acabaron las llamadas."
+      },
+      "limits": [
+        "requires_active_care"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "especiales-hoy",
+      "price": {
+        "kind": "recurring",
+        "amount": 10,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Send one WhatsApp in the morning and today's specials are live on your website.",
+        "es": "Mandas un WhatsApp por la mañana y los especiales de hoy aparecen en tu web."
+      },
+      "limits": [
+        "requires_active_care"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "festivos-auto",
+      "price": {
+        "kind": "recurring",
+        "amount": 0,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Bank holidays and one-off closures show up on your site and WhatsApp replies automatically.",
+        "es": "Festivos y cierres puntuales aparecen en tu web y en las respuestas de WhatsApp automáticamente."
+      },
+      "limits": [
+        "included_in_care",
+        "not_an_addon"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "fidelizacion",
+      "price": {
+        "kind": "recurring",
+        "amount": 15,
+        "period": "month"
+      },
+      "copy": {
+        "en": "A loyalty card that lives in WhatsApp: no paper, no app, your 10th coffee is on us.",
+        "es": "Tarjeta de fidelización en WhatsApp: sin papel, sin app, el décimo café invita la casa."
+      },
+      "limits": [
+        "requires_active_care"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "alergenos",
+      "price": {
+        "kind": "recurring",
+        "amount": 15,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Your menu with allergen info always up to date, on your website and by QR at the table.",
+        "es": "Tu carta con los alérgenos siempre al día, en tu web y con QR en la mesa."
+      },
+      "limits": [
+        "requires_active_care",
+        "verify_fsai_before_legal_claims"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "pedido-recurrente",
+      "price": {
+        "kind": "recurring",
+        "amount": 15,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Same wash as every Tuesday? Your regulars confirm with one tap.",
+        "es": "¿La colada de todos los martes? Tus habituales confirman con un toque."
+      },
+      "limits": [
+        "requires_active_care"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "referidos",
+      "price": {
+        "kind": "recurring",
+        "amount": 10,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Happy customers share a code on WhatsApp, and you set the reward.",
+        "es": "Clientes contentos comparten un código por WhatsApp y tú pones la recompensa."
+      },
+      "limits": [
+        "requires_active_care"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "carta-qr",
+      "price": {
+        "kind": "recurring",
+        "amount": 20,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Table QR ordering to WhatsApp or the counter, with a flat price and no commission on every order.",
+        "es": "Pedido en mesa por QR a WhatsApp o barra, precio fijo y sin comisión por pedido."
+      },
+      "limits": [
+        "requires_active_care",
+        "no_commission"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "aviso-stock",
+      "price": {
+        "kind": "recurring",
+        "amount": 10,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Out of stock? Customers leave their WhatsApp and hear the moment it's back.",
+        "es": "¿Sin stock? El cliente deja su WhatsApp y se entera al volver."
+      },
+      "limits": [
+        "requires_active_care",
+        "needs_live_catalog"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "bonos-regalo",
+      "price": {
+        "kind": "fixed",
+        "amount": 150
+      },
+      "copy": {
+        "en": "Sell gift vouchers from your own website, paid straight into your account.",
+        "es": "Vende bonos regalo desde tu propia web, cobrados directamente en tu cuenta."
+      },
+      "limits": [
+        "setup_150_plus_10_month",
+        "third_party_money_legal_review"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "wcag-fix",
+      "price": {
+        "kind": "fixed",
+        "amount": 350
+      },
+      "copy": {
+        "en": "We fix what the accessibility audit finds, so your site works for everyone.",
+        "es": "Corregimos lo que encuentre la auditoría de accesibilidad, para que tu web funcione para todos."
+      },
+      "limits": [
+        "one_off"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "pack-barberia",
+      "price": {
+        "kind": "recurring",
+        "amount": 40,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Bookings, reminders, a waiting list and a loyalty card: everything a busy barbershop needs, with no commission.",
+        "es": "Reservas, recordatorios, lista de espera y fidelización: todo lo que una barbería necesita, sin comisiones."
+      },
+      "limits": [
+        "requires_active_care",
+        "sellable_only_when_all_pieces_verified",
+        "extra_diary_plus_5"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "pack-cafe",
+      "price": {
+        "kind": "recurring",
+        "amount": 48,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Today's specials, allergen menu, table QR and a loyalty card, all run from WhatsApp.",
+        "es": "Especiales del día, carta con alérgenos, QR en mesa y fidelización, todo desde WhatsApp."
+      },
+      "limits": [
+        "requires_active_care",
+        "sellable_only_when_all_pieces_verified"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    },
+    {
+      "id": "pack-lavanderia",
+      "price": {
+        "kind": "recurring",
+        "amount": 28,
+        "period": "month"
+      },
+      "copy": {
+        "en": "Your wash is ready, one-tap repeat orders and feedback after every service.",
+        "es": "Tu colada está lista, pedidos repetidos de un toque y encuesta tras cada servicio."
+      },
+      "limits": [
+        "requires_active_care",
+        "sellable_only_when_all_pieces_verified"
+      ],
+      "state": "not_for_sale",
+      "sale_enabled": false
+    }
+  ],
+  "commercial_rules": {
+    "customer_type": "B2B",
+    "vat_copy": {
+      "en": "MACD is not VAT-registered; no VAT is charged.",
+      "es": "MACD no está registrada a efectos de IVA; no se cobra IVA."
+    },
+    "payment": {
+      "initial_percent": 50,
+      "final_percent": 50,
+      "final_gate": "written_acceptance_of_identified_preview",
+      "due": "Net 14"
+    },
+    "production_gate": "separate_written_approval",
+    "portfolio_default": "no_client_claim_without_separate_explicit_permission",
+    "domains_hosting": {
+      "provenance": "Politica de dominios y hosting aprobada por Marco 21/09/2026 (21:22 demos, 21:24 ampliacion renovaciones/hosting, 21:26 matiz solo-hosting interno); registrada en el doc canon por back office.",
+      "demos": {
+        "pattern": "subdomains of demos.macd.ie",
+        "per_prospect_domain": false,
+        "note": "No se registra un dominio por prospecto."
+      },
+      "client_domain": {
+        "ownership": "client",
+        "year_1": "included_in_setup",
+        "year_2_plus": "covered_by_active_care_plan",
+        "on_cancellation": "renewals_at_client_cost"
+      },
+      "hosting": {
+        "year_1": "included",
+        "year_2_plus": "covered_by_active_care_plan",
+        "hosting_only_plan": {
+          "amount": 15,
+          "currency": "EUR",
+          "period": "month",
+          "visibility": "internal",
+          "note": "Plan interno: nunca en business.json, catalogo publico, web ni materiales de venta; solo se comunica a quien lo contrata."
+        },
+        "export": "free_with_60_days_notice",
+        "retention": "never_withhold_client_sites_or_domains"
+      }
+    },
+    "care_perks": {
+      "provenance": "Programa de incentivos care aprobado por Marco 21/09/2026 21:30 (back office lo registra en canon). Publico y vendible: forma parte de la propuesta de valor del care.",
+      "consecutive_months_rule": {
+        "en": "Months must be consecutive; cancelling resets the counter.",
+        "es": "Los meses deben ser consecutivos; cancelar reinicia el contador."
+      },
+      "perks": [
+        {
+          "at_month": 12,
+          "en": "Website refresh to the new model.",
+          "es": "Actualización de la web al modelo nuevo."
+        },
+        {
+          "at_month": 6,
+          "en": "Same-day express content review.",
+          "es": "Revisión exprés de contenido el mismo día."
+        },
+        {
+          "at_month": 12,
+          "en": "Annual web health report (speed, accessibility, Google Business Profile).",
+          "es": "Informe anual de salud web (velocidad, accesibilidad, Google Business Profile)."
+        },
+        {
+          "at_month": 24,
+          "en": "Second language free.",
+          "es": "Segundo idioma gratis."
+        },
+        {
+          "en": "New modules first and free in care.",
+          "es": "Módulos nuevos primero y gratis en care."
+        },
+        {
+          "en": "Price frozen while the plan is uninterrupted.",
+          "es": "Precio congelado mientras no se interrumpa el plan."
+        },
+        {
+          "en": "Priority in the change queue.",
+          "es": "Prioridad en la cola de cambios."
+        }
+      ]
+    }
+  },
+  "capabilities": {
+    "mcp_default": "read_only",
+    "chat": "deterministic",
+    "allowed_tools": [
+      "get_services",
+      "get_pricing",
+      "get_availability",
+      "get_faq",
+      "get_portfolio",
+      "get_process",
+      "estimate_quote",
+      "compare_options",
+      "audit_agent_readiness"
+    ],
+    "forbidden_tools": [
+      "request_quote",
+      "book_discovery_call",
+      "subscribe_updates",
+      "notify_when_ready"
+    ],
+    "mutation_gate": [
+      "named_capability",
+      "provider_account",
+      "authentication",
+      "source",
+      "destination",
+      "logging",
+      "retention",
+      "escalation",
+      "provider_readback",
+      "sow"
+    ]
+  },
+  "claims": {
+    "accessibility": {
+      "allowed": [
+        "audit-led",
+        "scoped after testing",
+        "no certification or guarantee unless expressly evidenced"
+      ]
+    },
+    "timing": {
+      "allowed": "48-hour target only for eligible templated one-page landing after Ready when SOW confirms it"
+    }
+  },
+  "released_at": "2026-09-21"
+}

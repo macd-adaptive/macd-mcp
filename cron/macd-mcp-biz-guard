@@ -1,0 +1,1 @@
+*/10 * * * * root /opt/macd/bin/mcp-biz-guard.sh && touch /opt/macd/state/deadman/mcp-biz-guard

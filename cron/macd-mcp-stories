@@ -1,0 +1,2 @@
+# mcp-stories (Agent-Ready mejora 9): historias mensuales en prosa, dia 1 07:05
+5 7 1 * * root /opt/macd/bin/mcp-stories.py >> /var/log/macd-mcp-stories.log 2>&1 && touch /opt/macd/state/deadman/mcp-stories || echo "$(date -Is) mcp-stories FAIL" >> /var/log/macd-mcp-stories.alert

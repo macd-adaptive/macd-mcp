@@ -1,0 +1,2 @@
+# mcp-insights (Agent-Ready mejoras 1/2/5): agregacion diaria MCP_METRIC, salud, frescura
+15 6 * * * root /opt/macd/bin/mcp-insights.py >> /var/log/macd-mcp-insights.log 2>&1 && touch /opt/macd/state/deadman/mcp-insights || echo "$(date -Is) mcp-insights FAIL" >> /var/log/macd-mcp-insights.alert

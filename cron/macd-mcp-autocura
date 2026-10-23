@@ -1,0 +1,2 @@
+# mcp-autocura (Agent-Ready mejora 4): pack roto -> restaura backup valido + verifica endpoint
+*/15 * * * * root /opt/macd/bin/mcp-biz-autocura.py >> /var/log/macd-mcp-autocura-cron.log 2>&1 || echo "$(date -Is) mcp-autocura FAIL" >> /var/log/macd-mcp-autocura.alert

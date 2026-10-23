@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "quote_draft": {
+    "ttl_days": 30,
+    "inputs_max_keys": 20,
+    "inputs_max_chars": 500,
+    "states": ["draft_requires_human_approval", "out_of_catalog_safe_stop"]
+  },
+  "extra_requires_human_approval": ["mail:send", "publish:approve", "billing:write", "quotes:send", "quotes:commit"]
+}
