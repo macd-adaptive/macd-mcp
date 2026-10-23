@@ -64,7 +64,9 @@ MACD Adaptive Limited — Dublin 15, Ireland — info@macd.ie — +353 87 457 41
 
 ## Server source
 
-This repository also holds the canonical source of the public MCP server
+This repository also holds a read-only snapshot of the public MCP server
 (endpoint, per-business layer, ops scripts, crons) under `server/`, `ops/`,
-`cron/` and `docs/MCP-SERVER.md`. The npm package is unchanged and still
+`cron/` and `docs/MCP-SERVER.md`, recovered from production 23/10/2026. It is
+the intended canonical source pending a separately gated convergence; nothing
+here deploys or changes production. The npm package is unchanged and still
 contains only the stdio proxy (`bin/`, `lib/`).
