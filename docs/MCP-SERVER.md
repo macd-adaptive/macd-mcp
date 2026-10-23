@@ -40,12 +40,14 @@ repository.
 ## Tests
 
 `npm test` runs everything: the stdio proxy suite and the portable server
-suite (`test/server-*.test.mjs`, 31 tests) — pure handler tests, no Docker, no
-network, no dependencies. These portable tests do NOT replace the operational
+suite (`test/server-*.test.mjs`, 11 new tests; 31 total with the existing 20
+proxy tests) — pure handler tests, no Docker, no network, no dependencies. These portable tests do NOT replace the operational
 battery: the full production regression (340 cases, 17 families + adversarial)
 needs `/opt/macd/mcp-regression/battery.py` and the installed business packs
 on the host — both external to this repo; packs are client data and are never
-copied here.
+copied here. `ops/mcp-biz-conformance.sh` likewise proves conformance for ONE
+installed business (its default fixture is the specific production slug
+ember-oat), not for businesses in general.
 
 ## Logging behavior (documented, not a guarantee)
 
