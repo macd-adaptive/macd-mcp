@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/images/banner.png" alt="MACD MCP: agent-ready endpoints for macd.ie" width="900">
+</p>
+
 # MACD Adaptive — MCP server
 
 Public MCP (Model Context Protocol) server for [macd.ie](https://macd.ie), the website of MACD Adaptive Limited, a web design studio in Dublin 15, Ireland (CRO 818724). English and Spanish spoken.
