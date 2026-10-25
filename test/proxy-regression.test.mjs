@@ -113,3 +113,28 @@ test("proxy awaits each request instead of forwarding requests concurrently", as
   try { assert.deepEqual(seen, [1]); } finally { release(); }
   assert.deepEqual((await pending).map(m => m.id), [1, 2]);
 });
+
+test("forward aborts a hung endpoint with a clear timeout error", async () => {
+  const hanging = (url, opts) => new Promise((_, reject) => {
+    let ticks = 0;
+    const poll = setInterval(() => {
+      if (!opts.signal.aborted && ++ticks < 200) return; // 1s de techo: el mock nunca cuelga la suite
+      clearInterval(poll);
+      const err = new Error(opts.signal.aborted ? "aborted" : "mock gave up waiting for abort");
+      err.name = "TimeoutError";
+      reject(err);
+    }, 5);
+  });
+  await assert.rejects(
+    forward("https://example.invalid/mcp", { jsonrpc: "2.0", id: 1, method: "ping" }, undefined, hanging, 25),
+    /did not answer within 25 ms/
+  );
+});
+
+test("forward passes non-timeout fetch errors through unchanged", async () => {
+  const broken = () => Promise.reject(new Error("connection refused"));
+  await assert.rejects(
+    forward("https://example.invalid/mcp", { jsonrpc: "2.0", id: 1, method: "ping" }, undefined, broken, 25),
+    /connection refused/
+  );
+});
