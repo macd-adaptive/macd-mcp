@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
 import http from "node:http";
+import { readFileSync } from "node:fs";
 
 // Real CLI, loopback HTTP only; no call to the public endpoint.
 async function runCli(handler, input) {
@@ -87,4 +88,26 @@ test("CLI recovers from malformed stdin and HTTP failure with JSON-only stdout",
     { jsonrpc: "2.0", id: 0, error: { code: -32603, message: "Proxy error: endpoint 503: offline" } },
     { jsonrpc: "2.0", id: "recovered", result: true },
   ]);
+});
+
+test("CLI --version prints the package version and exits without proxying", async () => {
+  const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+  const child = spawn(process.execPath, [new URL("../bin/macd-mcp.mjs", import.meta.url).pathname, "--version"], { stdio: ["ignore", "pipe", "pipe"] });
+  let stdout = "";
+  child.stdout.setEncoding("utf8");
+  child.stdout.on("data", d => { stdout += d; });
+  const [code] = await once(child, "close");
+  assert.equal(code, 0);
+  assert.equal(stdout.trim(), pkg.version);
+});
+
+test("CLI --help prints usage and exits without proxying", async () => {
+  const child = spawn(process.execPath, [new URL("../bin/macd-mcp.mjs", import.meta.url).pathname, "--help"], { stdio: ["ignore", "pipe", "pipe"] });
+  let stdout = "";
+  child.stdout.setEncoding("utf8");
+  child.stdout.on("data", d => { stdout += d; });
+  const [code] = await once(child, "close");
+  assert.equal(code, 0);
+  assert.match(stdout, /Usage: macd-mcp/);
+  assert.match(stdout, /MACD_MCP_URL/);
 });
