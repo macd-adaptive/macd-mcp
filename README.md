@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/banner.png" alt="MACD MCP: agent-ready endpoints for macd.ie" width="900">
+  <img src="docs/images/banner.svg" alt="MACD MCP: agent-ready endpoints for macd.ie" width="900">
 </p>
 
 # MACD Adaptive — MCP server
