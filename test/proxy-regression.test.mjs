@@ -8,7 +8,7 @@ function response(body = "", { status = 200, type, session } = {}) {
   const headers = new Map();
   if (type) headers.set("content-type", type);
   if (session) headers.set("mcp-session-id", session);
-  return { status, ok: status >= 200 && status < 300, headers, text: async () => body };
+  return new Response(status === 202 || status === 204 ? null : body, { status, headers: Object.fromEntries(headers) });
 }
 async function run(chunks, fetchImpl) {
   let stdout = "";
@@ -41,10 +41,11 @@ test("forward preserves method, params, id zero and exact POST target", async ()
 
 for (const status of [202, 204]) {
   test(`forward ${status} neither reads a body nor loses a returned session`, async () => {
-    const result = await forward(endpoint, { method: "notifications/initialized" }, undefined, async () => ({
-      ...response("", { status, session: "new-session" }),
-      text: async () => { assert.fail("body must not be read"); },
-    }));
+    const result = await forward(endpoint, { method: "notifications/initialized" }, undefined, async () => {
+      const res = response("", { status, session: "new-session" });
+      res.text = async () => { assert.fail("body must not be read"); };
+      return res;
+    });
     assert.deepEqual(result, { messages: [], sessionId: "new-session" });
   });
 }
@@ -56,9 +57,9 @@ test("forward accepts empty success bodies and SSE content-type parameters", asy
   assert.deepEqual(sse.messages, ['{"id":2}', '{"id":3}']);
 });
 
-test("HTTP errors bound diagnostic text to 200 characters", async () => {
+test("HTTP errors omit endpoint body text", async () => {
   await assert.rejects(forward(endpoint, { id: 1 }, undefined, async () => response("x".repeat(201), { status: 503 })),
-    (err) => err.message === `endpoint 503: ${"x".repeat(200)}`);
+    (err) => err.message === "endpoint 503");
 });
 
 test("proxy handles split input, blank lines and CRLF without duplicate requests", async () => {
@@ -92,7 +93,7 @@ test("proxy continues after parse and network failures, preserving zero and stri
   assert.deepEqual(seen, [0, "ok"]);
   assert.deepEqual(messages, [
     { jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error: stdin line is not JSON" } },
-    { jsonrpc: "2.0", id: 0, error: { code: -32603, message: "Proxy error: network down" } },
+    { jsonrpc: "2.0", id: 0, error: { code: -32603, message: "Proxy error: endpoint request failed" } },
     { jsonrpc: "2.0", id: "ok", result: true },
   ]);
 });
@@ -131,10 +132,10 @@ test("forward aborts a hung endpoint with a clear timeout error", async () => {
   );
 });
 
-test("forward passes non-timeout fetch errors through unchanged", async () => {
+test("forward sanitizes non-timeout fetch errors", async () => {
   const broken = () => Promise.reject(new Error("connection refused"));
   await assert.rejects(
     forward("https://example.invalid/mcp", { jsonrpc: "2.0", id: 1, method: "ping" }, undefined, broken, 25),
-    /connection refused/
+    /endpoint request failed/
   );
 });
