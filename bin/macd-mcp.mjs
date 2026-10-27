@@ -9,7 +9,7 @@ import { runProxy, DEFAULT_ENDPOINT } from "../lib/proxy.mjs";
 
 const args = process.argv.slice(2);
 if (args.includes("--help") || args.includes("-h")) {
-  console.log("macd-mcp: stdio proxy for the public MCP endpoint of macd.ie.\n\nUsage: macd-mcp [--help] [--version]\n\nMCP clients launch this as a subprocess and speak newline-delimited\nJSON-RPC on stdin/stdout. No auth, no telemetry, no storage.\n\nEnvironment:\n  MACD_MCP_URL  override the endpoint (default " + DEFAULT_ENDPOINT + ")");
+  console.log("macd-mcp: stdio proxy for the public MCP endpoint of macd.ie.\n\nUsage: macd-mcp [--help] [--version]\n\nMCP clients launch this as a subprocess and speak newline-delimited\nJSON-RPC on stdin/stdout. No auth, no telemetry, no storage.\n\nEnvironment:\n  MACD_MCP_ALLOW_LOOPBACK_HTTP=1  allow HTTP only on localhost, 127.0.0.1 or [::1]\n  MACD_MCP_URL  override the HTTPS endpoint (default " + DEFAULT_ENDPOINT + ")");
   process.exit(0);
 }
 if (args.includes("--version") || args.includes("-v")) {
@@ -19,7 +19,7 @@ if (args.includes("--version") || args.includes("-v")) {
 }
 
 const endpoint = process.env.MACD_MCP_URL || DEFAULT_ENDPOINT;
-runProxy({ input: process.stdin, output: process.stdout, endpoint }).catch((err) => {
+runProxy({ input: process.stdin, output: process.stdout, endpoint, allowLoopbackHttp: process.env.MACD_MCP_ALLOW_LOOPBACK_HTTP === "1" }).catch((err) => {
   console.error(`macd-mcp: ${err.message}`);
   process.exit(1);
 });

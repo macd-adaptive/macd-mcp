@@ -18,7 +18,7 @@ async function runCli(handler, input) {
     server.listen(0, "127.0.0.1");
     await once(server, "listening");
     child = spawn(process.execPath, [new URL("../bin/macd-mcp.mjs", import.meta.url).pathname], {
-      env: { ...process.env, MACD_MCP_URL: `http://127.0.0.1:${server.address().port}/mcp` },
+      env: { ...process.env, MACD_MCP_URL: `http://127.0.0.1:${server.address().port}/mcp`, MACD_MCP_ALLOW_LOOPBACK_HTTP: "1" },
       stdio: ["pipe", "pipe", "pipe"],
     });
     let stdout = "", stderr = "", stdinError;
@@ -85,7 +85,7 @@ test("CLI recovers from malformed stdin and HTTP failure with JSON-only stdout",
   assert.deepEqual(seen, [0, "recovered"], "invalid input never reaches HTTP");
   assert.deepEqual(replies, [
     { jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error: stdin line is not JSON" } },
-    { jsonrpc: "2.0", id: 0, error: { code: -32603, message: "Proxy error: endpoint 503: offline" } },
+    { jsonrpc: "2.0", id: 0, error: { code: -32603, message: "Proxy error: endpoint 503" } },
     { jsonrpc: "2.0", id: "recovered", result: true },
   ]);
 });
@@ -110,4 +110,35 @@ test("CLI --help prints usage and exits without proxying", async () => {
   assert.equal(code, 0);
   assert.match(stdout, /Usage: macd-mcp/);
   assert.match(stdout, /MACD_MCP_URL/);
+});
+
+test("CLI never follows a session-bearing redirect, retries a POST or replies to a failed notification", { timeout: 8000 }, async () => {
+  const seen = [];
+  const replies = await runCli((req, res, msg) => {
+    seen.push({ path: req.url, id: msg.id, session: req.headers["mcp-session-id"] });
+    // A followed 307 preserves the POST body and session header: catch leakage.
+    if (req.url === "/redirect-target") {
+      res.writeHead(200).end(JSON.stringify({ id: msg.id, result: "leaked" }));
+    } else if (msg.id === 0) {
+      res.writeHead(200, { "mcp-session-id": "private-session" }).end(JSON.stringify({ id: 0, result: true }));
+    } else if (msg.id === 1) {
+      assert.equal(msg.params.private, "private-client-payload");
+      res.writeHead(307, { location: "/redirect-target" }).end("private redirect body");
+    } else if (!Object.hasOwn(msg, "id")) {
+      res.writeHead(404, { "mcp-session-id": "stale-replacement" }).end("private 404 body");
+    } else {
+      res.writeHead(200).end(JSON.stringify({ id: msg.id, result: true }));
+    }
+  }, '{"id":0}\n{"id":1,"params":{"private":"private-client-payload"}}\n{"method":"notifications/initialized"}\n{"id":2}\n');
+  assert.deepEqual(seen, [
+    { path: "/mcp", id: 0, session: undefined },
+    { path: "/mcp", id: 1, session: "private-session" },
+    { path: "/mcp", id: undefined, session: "private-session" },
+    { path: "/mcp", id: 2, session: undefined },
+  ]);
+  assert.deepEqual(replies, [
+    { id: 0, result: true },
+    { jsonrpc: "2.0", id: 1, error: { code: -32603, message: "Proxy error: endpoint request failed" } },
+    { id: 2, result: true },
+  ]);
 });

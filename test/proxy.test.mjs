@@ -13,13 +13,11 @@ test("forward: posts the message and parses an SSE answer", async () => {
   const seen = {};
   const fetchImpl = async (url, opts) => {
     seen.url = url; seen.body = JSON.parse(opts.body); seen.headers = opts.headers;
-    return {
-      status: 200, ok: true,
-      headers: new Map([["content-type", "text/event-stream"], ["mcp-session-id", "s-123"]]),
-      text: async () => 'event: message\ndata: {"jsonrpc":"2.0","id":1,"result":{"ok":true}}\n\n',
-    };
+    return new Response('event: message\ndata: {"jsonrpc":"2.0","id":1,"result":{"ok":true}}\n\n', {
+      headers: { "content-type": "text/event-stream", "mcp-session-id": "s-123" },
+    });
   };
-  const r = await forward("http://x/mcp", { jsonrpc: "2.0", id: 1, method: "initialize", params: {} }, undefined, fetchImpl);
+  const r = await forward("https://example.invalid/mcp", { jsonrpc: "2.0", id: 1, method: "initialize", params: {} }, undefined, fetchImpl);
   assert.equal(r.messages.length, 1);
   assert.deepEqual(JSON.parse(r.messages[0]).result, { ok: true });
   assert.equal(r.sessionId, "s-123");
@@ -27,8 +25,8 @@ test("forward: posts the message and parses an SSE answer", async () => {
 });
 
 test("forward: 202 (notification accepted) yields no messages", async () => {
-  const fetchImpl = async () => ({ status: 202, ok: true, headers: new Map(), text: async () => "" });
-  const r = await forward("http://x/mcp", { jsonrpc: "2.0", method: "notifications/initialized" }, undefined, fetchImpl);
+  const fetchImpl = async () => new Response(null, { status: 202 });
+  const r = await forward("https://example.invalid/mcp", { jsonrpc: "2.0", method: "notifications/initialized" }, undefined, fetchImpl);
   assert.deepEqual(r.messages, []);
 });
 
@@ -36,16 +34,16 @@ test("forward: plain JSON answer passes through; session header is sent when hel
   const seen = {};
   const fetchImpl = async (url, opts) => {
     seen.headers = opts.headers;
-    return { status: 200, ok: true, headers: new Map([["content-type", "application/json"]]), text: async () => '{"jsonrpc":"2.0","id":2,"result":[]}' };
+    return new Response('{"jsonrpc":"2.0","id":2,"result":[]}', { headers: { "content-type": "application/json" } });
   };
-  const r = await forward("http://x/mcp", { jsonrpc: "2.0", id: 2, method: "tools/list" }, "s-123", fetchImpl);
+  const r = await forward("https://example.invalid/mcp", { jsonrpc: "2.0", id: 2, method: "tools/list" }, "s-123", fetchImpl);
   assert.equal(seen.headers["mcp-session-id"], "s-123");
   assert.deepEqual(JSON.parse(r.messages[0]).result, []);
 });
 
 test("forward: HTTP error throws with the status", async () => {
-  const fetchImpl = async () => ({ status: 500, ok: false, headers: new Map(), text: async () => "boom" });
-  await assert.rejects(forward("http://x/mcp", { id: 1 }, undefined, fetchImpl), /endpoint 500/);
+  const fetchImpl = async () => new Response("boom", { status: 500 });
+  await assert.rejects(forward("https://example.invalid/mcp", { id: 1 }, undefined, fetchImpl), /endpoint 500/);
 });
 
 async function runProxyOnce(lines, fetchImpl) {
@@ -53,7 +51,7 @@ async function runProxyOnce(lines, fetchImpl) {
   const input = new PassThrough(), output = new PassThrough();
   let out = "";
   output.on("data", (c) => (out += c));
-  const p = runProxy({ input, output, endpoint: "http://x/mcp", fetchImpl });
+  const p = runProxy({ input, output, endpoint: "https://example.invalid/mcp", fetchImpl });
   for (const l of lines) input.write(l + "\n");
   input.end();
   await p;
@@ -68,7 +66,7 @@ test("runProxy: bad JSON line gets a -32700 parse error with null id", async () 
 });
 
 test("runProxy: endpoint failure gets a -32603 error carrying the request id", async () => {
-  const fetchImpl = async () => ({ status: 502, ok: false, headers: new Map(), text: async () => "bad gateway" });
+  const fetchImpl = async () => new Response("bad gateway", { status: 502 });
   const [res] = await runProxyOnce(['{"jsonrpc":"2.0","id":7,"method":"tools/list"}'], fetchImpl);
   assert.equal(res.error.code, -32603);
   assert.equal(res.id, 7);
@@ -88,7 +86,7 @@ test("bin end-to-end: real subprocess against a mock streamable-HTTP server", as
   await new Promise((r) => server.listen(0, "127.0.0.1", r));
   const url = `http://127.0.0.1:${server.address().port}/mcp`;
   try {
-    const child = spawn(process.execPath, ["bin/macd-mcp.mjs"], { env: { ...process.env, MACD_MCP_URL: url } });
+    const child = spawn(process.execPath, ["bin/macd-mcp.mjs"], { env: { ...process.env, MACD_MCP_URL: url, MACD_MCP_ALLOW_LOOPBACK_HTTP: "1" } });
     let out = "";
     child.stdout.on("data", (c) => (out += c));
     child.stdin.write('{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n');
