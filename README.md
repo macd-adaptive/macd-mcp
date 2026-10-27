@@ -78,3 +78,9 @@ All tools answer in English; pass `lang: "es"` for Spanish.
 ## Contact
 
 MACD Adaptive Limited — Dublin 15, Ireland — info@macd.ie — +353 87 457 4175
+
+## Read-only examples / Ejemplos de solo lectura
+
+[English and Spanish request examples](docs/EXAMPLES.md) cover all nine tools.
+They are synthetic requests checked offline against the dated input-schema fixture,
+not live responses or evidence of current prices, availability or permissions.
