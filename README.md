@@ -33,6 +33,19 @@ Add to your MCP configuration (e.g. `claude_desktop_config.json`):
 That is the whole setup: `npx -y macd-mcp` downloads the package and starts
 the proxy; the client then sees the nine read-only tools listed below.
 
+### Public contract checks
+
+`npm test` checks the README tool inventory against a checked-in `tools/list`
+fixture, including input schemas and the proxy response parser. It makes no live
+requests by default. The fixture was captured on 26 October 2026 and is evidence
+of that date, not a promise of current availability.
+
+Run `MACD_MCP_LIVE_SMOKE=1 npm test` for an opt-in read-only smoke check of the
+current inventory, schemas and both discovery cards. The discovery cards may use
+`https://macd.ie/api/mcp`, an explicit supported alias for `/mcp`. A failing live
+check means the contract needs review, not that a fixture should be blindly
+updated. No tool calls, prices or customer data are needed by this check.
+
 ### Options
 
 - `MACD_MCP_URL` - override the endpoint (default `https://macd.ie/mcp`).

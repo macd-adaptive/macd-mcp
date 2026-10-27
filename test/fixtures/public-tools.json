@@ -1,0 +1,277 @@
+{
+  "observedAt": "2026-10-26",
+  "endpoint": "https://macd.ie/mcp",
+  "tools": [
+    {
+      "name": "get_services",
+      "title": "List MACD Adaptive services",
+      "description": "Services and one-off/monthly prices of MACD Adaptive, a web design, automation and AI-integration studio for small businesses. Bilingual (en/es).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ],
+            "description": "Language of the answer; default en"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_pricing",
+      "title": "Get MACD Adaptive pricing",
+      "description": "Current prices: templated one-page site from EUR 400, WhatsApp ordering & bookings from EUR 300, complete online presence from EUR 800, custom quote-only, Care plan from EUR 50/month (up to 30 minutes/month, non-cumulative) or EUR 500 upfront for 12 months, Agent-Ready (MCP) setup from EUR 600 (from EUR 1,200 on third-party sites) + Care MCP from EUR 25/month.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_availability",
+      "title": "Check availability",
+      "description": "Whether MACD Adaptive is taking new projects and how fast they reply.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_faq",
+      "title": "Search the approved MACD FAQ",
+      "description": "Search all 106 approved bilingual answers; returns up to 20 best matches. Read-only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_portfolio",
+      "title": "List MACD demo portfolio",
+      "description": "List all 18 generic demo mockups with placeholder data. They are not client results. Read-only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_process",
+      "title": "Explain the MACD project process",
+      "description": "Return the deterministic quote, payment, onboarding, delivery and Care gates. Read-only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "estimate_quote",
+      "title": "Estimate an eligible MACD website quote",
+      "description": "Apply published pricing rules. Returns requires_quote outside fixed rules; never creates a quote or commitment.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "pages": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "content_ready": {
+            "type": "boolean"
+          },
+          "revision_rounds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20
+          },
+          "custom": {
+            "type": "boolean"
+          },
+          "whatsapp_addon": {
+            "type": "boolean"
+          },
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ]
+          }
+        },
+        "required": [
+          "pages"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "compare_options",
+      "title": "Compare MACD service options",
+      "description": "Compare two to four canonical service options by published price and fit. It does not choose or buy.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "option_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "web-one-page",
+                "web-4-5-pages",
+                "web-custom",
+                "whatsapp-request",
+                "mcp-built-site",
+                "mcp-third-party"
+              ]
+            },
+            "minItems": 2,
+            "maxItems": 4
+          },
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ]
+          }
+        },
+        "required": [
+          "option_ids"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "audit_agent_readiness",
+      "title": "Run an initial agent-readiness check",
+      "description": "Score six observable readiness inputs. Diagnostic only; no compatibility, ranking or outcome guarantee.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "checks": {
+            "type": "object",
+            "properties": {
+              "structured_services": {
+                "type": "boolean"
+              },
+              "canonical_hours": {
+                "type": "boolean"
+              },
+              "repeatable_use_case": {
+                "type": "boolean"
+              },
+              "human_handoff": {
+                "type": "boolean"
+              },
+              "permissions_defined": {
+                "type": "boolean"
+              },
+              "owner_access": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "lang": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es"
+            ]
+          }
+        },
+        "required": [
+          "checks"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    }
+  ]
+}
