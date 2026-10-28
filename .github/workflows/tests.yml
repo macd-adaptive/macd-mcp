@@ -22,7 +22,7 @@ jobs:
       - name: Unit tests (zero dependencies, no install needed)
         run: npm test
 
-# Cancel superseded PR runs only. Push runs remain non-cancelling.
+# Only PR runs share a group. Other events use a unique run ID.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
