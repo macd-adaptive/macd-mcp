@@ -9,6 +9,24 @@ test("parseSseEvents: extracts data payloads, skips comments and heartbeats", ()
   assert.deepEqual(parseSseEvents(body), ['{"a":1}', '{"b":\n2}']);
 });
 
+test("parseSseEvents: keeps payload whitespace beyond the one spec space", () => {
+  // Pretty-printed multi-line JSON: continuation lines are part of the payload.
+  const body = "data: {\ndata:   \"a\": 1\ndata: }\n\n";
+  assert.deepEqual(parseSseEvents(body), ['{\n  "a": 1\n}']);
+  assert.equal(JSON.parse(parseSseEvents(body)[0]).a, 1);
+});
+
+test("parseSseEvents: removes exactly one leading space after data:", () => {
+  assert.deepEqual(parseSseEvents("data:   x\n\n"), ["  x"]);   // two spaces kept
+  assert.deepEqual(parseSseEvents("data:\tx\n\n"), ["\tx"]); // tab is payload
+  assert.deepEqual(parseSseEvents("data:x\n\n"), ["x"]);       // no space at all
+});
+
+test("parseSseEvents: keeps trailing spaces and splits CR-only streams", () => {
+  assert.deepEqual(parseSseEvents("data: a  \n\n"), ["a  "]);
+  assert.deepEqual(parseSseEvents("data: a\r\rdata: b\r\r"), ["a", "b"]);
+});
+
 test("forward: posts the message and parses an SSE answer", async () => {
   const seen = {};
   const fetchImpl = async (url, opts) => {
