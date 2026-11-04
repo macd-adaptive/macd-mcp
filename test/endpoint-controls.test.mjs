@@ -11,8 +11,9 @@ test('endpoint validation rejects literal control characters instead of normaliz
 });
 test('malformed endpoint controls never reach fetch', async () => {
   let calls = 0;
+  const fetchImpl = () => { calls++; return Promise.resolve(new Response('{}')); };
   for (const endpoint of malformed) {
-    await assert.rejects(forward(endpoint, {id: 1}, null, async () => { calls++; return new Response('{}'); }));
+    await assert.rejects(forward(endpoint, {id: 1}, null, fetchImpl));
   }
   assert.equal(calls, 0);
 });
