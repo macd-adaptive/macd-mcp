@@ -16,11 +16,11 @@ for (const mode of ['synchronous throw', 'asynchronous error event']) {
     await assert.rejects(runProxy({
       input: Readable.from(['{"id":1}\n{"id":2}\n']), output,
       endpoint: 'https://example.invalid/mcp',
-      fetchImpl: async (_url, options) => {
+      fetchImpl: (_url, options) => {
         const message = JSON.parse(options.body); seen.push(message.id);
-        return new Response(JSON.stringify({jsonrpc: '2.0', id: message.id, result: {}}), {
+        return Promise.resolve(new Response(JSON.stringify({jsonrpc: '2.0', id: message.id, result: {}}), {
           headers: {'content-type': 'application/json'},
-        });
+        }));
       },
     }), error => error === failure);
     assert.deepEqual(seen, [1], 'a broken stdout must not cause a retry or another POST');
