@@ -53,3 +53,20 @@ test("checkLimit boundaries: 1 is valid, 0/negative/fractional/unsafe are not", 
     await assert.rejects(forward("https://macd.ie/mcp", { id: 1 }, null, f, 1000, { maxResponseBytes: bad }), /positive safe integer/);
   }
 });
+
+test("timeoutMs boundaries: small positive values are valid, 0/negative/fractional/unsafe are not", async () => {
+  const seen = [];
+  const f = mkFetch(seen);
+  await forward("https://macd.ie/mcp", { id: 1 }, null, f, 1).catch(() => {});
+  assert.ok(seen.length === 1, "timeoutMs=1 is accepted at validation");
+  for (const bad of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+    await assert.rejects(forward("https://macd.ie/mcp", { id: 1 }, null, f, bad), /timeoutMs must be a positive safe integer/);
+  }
+  for (const bad of [0, -1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+    const input = Readable.from((async function* () {})());
+    await assert.rejects(
+      runProxy({ input, output: mkOutput([]), endpoint: "https://macd.ie/mcp", fetchImpl: f, timeoutMs: bad }),
+      /timeoutMs must be a positive safe integer/,
+    );
+  }
+});
