@@ -46,3 +46,14 @@ requests with explicit null, zero or string ids retain those ids in proxy
 errors. Proxy diagnostics expose fixed descriptions, status codes or configured
 limits/timeouts, never arbitrary endpoint error bodies or fetch/stream exception
 text.
+
+HTTP JSON bodies and SSE data events may span multiple lines. Before writing a
+reply to stdio, the proxy replaces actual CR and LF characters with spaces so
+one reply occupies one stdout line. For valid JSON these characters are only
+whitespace outside strings: escaped `\n`/`\r`, string values and number lexemes
+(including integers larger than JavaScript's safe integer range) are unchanged.
+This is framing, not validation. Malformed endpoint JSON is still not rejected;
+flattening malformed multiline input may leave it malformed or change its
+meaning or validity (for example, a raw LF inside a quoted string becomes a
+space). Endpoint responses must not be treated as validated by this proxy.
+The library `forward` and `parseSseEvents` results are not flattened.
