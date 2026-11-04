@@ -57,3 +57,8 @@ flattening malformed multiline input may leave it malformed or change its
 meaning or validity (for example, a raw LF inside a quoted string becomes a
 space). Endpoint responses must not be treated as validated by this proxy.
 The library `forward` and `parseSseEvents` results are not flattened.
+
+Library `timeoutMs` must be a positive safe integer no greater than
+2,147,483,647 ms (Node's signed 32-bit timer maximum). Larger values fail
+before forwarding or consuming stdin, rather than being clamped by Node to
+1 ms or raising an internal range error. The default remains 60,000 ms.
