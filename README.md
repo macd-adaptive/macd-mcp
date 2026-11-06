@@ -84,3 +84,14 @@ MACD Adaptive Limited — Dublin 15, Ireland — info@macd.ie — +353 87 457 41
 [English and Spanish request examples](docs/EXAMPLES.md) cover all nine tools.
 They are synthetic requests checked offline against the dated input-schema fixture,
 not live responses or evidence of current prices, availability or permissions.
+
+### SSE parsing boundaries
+
+The proxy accepts LF, CR and CRLF event-stream line endings, strips one leading
+UTF-8 BOM, and treats a bare `data` field as an empty data line. Field names are
+case-sensitive and only one optional space after `data:` is removed. These
+rules avoid dropping a first response or changing multiline data when a server
+uses these valid SSE forms. The proxy retains its existing compatibility
+behavior of accepting a final event without a terminating blank line; this is
+not a claim of full browser EventSource conformance. It still waits for the
+bounded HTTP body to finish and does not implement reconnects or retries.
