@@ -4,12 +4,13 @@ import {EventEmitter} from 'node:events';
 import {Readable} from 'node:stream';
 import {runProxy} from '../lib/proxy.mjs';
 
-for (const mode of ['synchronous throw', 'asynchronous error event']) {
+for (const mode of ['synchronous throw', 'asynchronous error event', 'write callback error']) {
   test(`stdout ${mode} stops forwarding without retrying or leaking a listener`, async () => {
     const output = new EventEmitter();
     const failure = new Error('synthetic closed output');
-    output.write = () => {
+    output.write = (_chunk, callback) => {
       if (mode === 'synchronous throw') throw failure;
+      if (mode === 'write callback error') { queueMicrotask(() => callback(failure)); return; }
       queueMicrotask(() => output.emit('error', failure));
     };
     const seen = [];
@@ -24,6 +25,7 @@ for (const mode of ['synchronous throw', 'asynchronous error event']) {
       },
     }), error => error === failure);
     assert.deepEqual(seen, [1], 'a broken stdout must not cause a retry or another POST');
+    await new Promise(resolve => setImmediate(resolve));
     assert.equal(output.listenerCount('error'), 0);
   });
 }
