@@ -142,3 +142,24 @@ test("CLI never follows a session-bearing redirect, retries a POST or replies to
     { id: 2, result: true },
   ]);
 });
+
+test("CLI rejects malformed UTF-8 bytes before HTTP and recovers through the real binary", { timeout: 8000 }, async () => {
+  const invalid = Buffer.concat([
+    Buffer.from('{"jsonrpc":"2.0","id":"invalid","method":"tools/call","params":{"text":"'),
+    Buffer.from([0xc0, 0xaf]),
+    Buffer.from('"}}\n'),
+  ]);
+  const valid = { jsonrpc: "2.0", id: "recovered", method: "tools/call", params: { text: "é🌍�" } };
+  const input = Buffer.concat([invalid, Buffer.from(`${JSON.stringify(valid)}\n`)]);
+  const seen = [];
+  const replies = await runCli((req, res, message) => {
+    seen.push({ method: req.method, path: req.url, message });
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(JSON.stringify({ jsonrpc: "2.0", id: message.id, result: message.params.text }));
+  }, input);
+  assert.deepEqual(seen, [{ method: "POST", path: "/mcp", message: valid }], "only the valid line reaches loopback HTTP");
+  assert.deepEqual(replies, [
+    { jsonrpc: "2.0", id: null, error: { code: -32700, message: "Parse error: stdin line is not valid UTF-8" } },
+    { jsonrpc: "2.0", id: "recovered", result: "é🌍�" },
+  ]);
+});
