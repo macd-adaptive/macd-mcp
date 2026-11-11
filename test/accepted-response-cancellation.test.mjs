@@ -20,7 +20,9 @@ function acceptedResponse(status, cancelMode = 'resolve') {
         observed.cancels++;
         if (cancelMode === 'throw') throw new Error('private-cancel-fixture');
         if (cancelMode === 'reject') return Promise.reject(new Error('private-cancel-fixture'));
-        if (cancelMode === 'pending') return new Promise(() => {});
+        if (cancelMode === 'pending') return new Promise(() => {
+          // Deliberately never settle: cancellation must not block the next turn.
+        });
         return Promise.resolve();
       },
     },
