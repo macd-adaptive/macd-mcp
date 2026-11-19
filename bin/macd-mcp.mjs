@@ -8,6 +8,11 @@ import { readFileSync } from "node:fs";
 import { runProxy, DEFAULT_ENDPOINT } from "../lib/proxy.mjs";
 
 const args = process.argv.slice(2);
+if (args.some(arg => !["--help", "-h", "--version", "-v"].includes(arg))) {
+  // Do not echo arbitrary arguments, which may contain private URL/token data.
+  console.error("macd-mcp: unsupported arguments; use --help for usage");
+  process.exit(2);
+}
 if (args.includes("--help") || args.includes("-h")) {
   console.log("macd-mcp: stdio proxy for the public MCP endpoint of macd.ie.\n\nUsage: macd-mcp [--help] [--version]\n\nMCP clients launch this as a subprocess and speak newline-delimited\nJSON-RPC on stdin/stdout. No auth, no telemetry, no storage.\n\nEnvironment:\n  MACD_MCP_ALLOW_LOOPBACK_HTTP=1  allow HTTP only on localhost, 127.0.0.1 or [::1]\n  MACD_MCP_URL  override the HTTPS endpoint (default " + DEFAULT_ENDPOINT + ")");
   process.exit(0);

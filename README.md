@@ -49,6 +49,9 @@ updated. No tool calls, prices or customer data are needed by this check.
 ### Options
 
 - `MACD_MCP_URL` - override the endpoint (default `https://macd.ie/mcp`).
+- `MACD_MCP_ALLOW_LOOPBACK_HTTP=1` - opt in to HTTP only for literal `localhost`, `127.0.0.1` or `[::1]`, for local development. Other endpoints still require HTTPS.
+
+The CLI accepts only `--help`/`-h` and `--version`/`-v`. Unsupported options or positional arguments exit with status 2 before reading stdin or forwarding requests. Set the endpoint through the environment variable, not a command-line URL. Errors do not echo the rejected arguments.
 
 ### Develop
 
